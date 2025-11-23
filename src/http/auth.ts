@@ -1,4 +1,5 @@
 import { env } from '@/env'
+import { UnauthorizedError } from '@/http/errors/unauthorized-error'
 import jwt from '@elysiajs/jwt'
 import Elysia, { t, type Static } from 'elysia'
 
@@ -14,6 +15,18 @@ const jwtSchema = t.Object({
 })
 
 export const auth = new Elysia()
+  // Mapping custom errors to status codes
+  .error({
+    UNAUTHORIZED: UnauthorizedError,
+  })
+  // Creating custom error handling for specific authorization errors
+  .onError(({ error, code, set }) => {
+    switch (code) {
+      case 'UNAUTHORIZED':
+        set.status = 401
+        return { code, message: error.message }
+    }
+  })
   .use(
     jwt({
       secret: env.JWT_SECRET,
@@ -41,7 +54,7 @@ export const auth = new Elysia()
           const payload = await verify(auth!.value as string)
 
           if (!payload) {
-            throw new Error('Unauthorized.')
+            throw new UnauthorizedError()
           }
 
           return {
