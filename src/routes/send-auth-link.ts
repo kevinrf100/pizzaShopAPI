@@ -1,6 +1,7 @@
 import { db } from '@/db/connections'
 import { authLinks } from '@/db/schemas'
 import { env } from '@/env'
+import { mail } from '@/lib/mail'
 import { createId } from '@paralleldrive/cuid2'
 import Elysia, { t } from 'elysia'
 
@@ -41,7 +42,15 @@ export const sendAuthLink = new Elysia().post(
 
     console.log(`Auth link for ${email}: ${authLinkUrl.toString()}`)
 
-    // Sending email logic would be here
+    await mail.sendMail({
+      from: {
+        name: 'Pizza App',
+        address: 'no-reply@pizzaapp.com',
+      },
+      to: email,
+      subject: 'Authentication link to pizza shop',
+      text: `Click the link to sign in: ${authLinkUrl.toString()}`,
+    })
     set.status = 204
   },
   {
