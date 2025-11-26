@@ -1,10 +1,10 @@
-import { signOut } from '@/db/schemas/sign-out'
 import { env } from '@/env'
 import { authenticateFromLink } from '@/routes/authenticate-from-link'
 import { managedRestaurant } from '@/routes/managed-restaurants'
 import { profile } from '@/routes/profile'
 import { registerRestaurants } from '@/routes/register-restaurants'
 import { sendAuthLink } from '@/routes/send-auth-link'
+import { signOut } from '@/routes/sign-out'
 import chalk from 'chalk'
 import { Elysia } from 'elysia'
 

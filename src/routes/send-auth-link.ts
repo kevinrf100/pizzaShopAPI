@@ -4,6 +4,7 @@ import { env } from '@/env'
 import { mail } from '@/lib/mail'
 import { createId } from '@paralleldrive/cuid2'
 import Elysia, { t } from 'elysia'
+import { getTestMessageUrl } from 'nodemailer'
 
 export const sendAuthLink = new Elysia().post(
   '/send-auth-link',
@@ -42,7 +43,7 @@ export const sendAuthLink = new Elysia().post(
 
     console.log(`Auth link for ${email}: ${authLinkUrl.toString()}`)
 
-    await mail.sendMail({
+    const result = await mail.sendMail({
       from: {
         name: 'Pizza App',
         address: 'no-reply@pizzaapp.com',
@@ -51,6 +52,8 @@ export const sendAuthLink = new Elysia().post(
       subject: 'Authentication link to pizza shop',
       text: `Click the link to sign in: ${authLinkUrl.toString()}`,
     })
+    console.log(getTestMessageUrl(result))
+
     set.status = 204
   },
   {
