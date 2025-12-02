@@ -5,13 +5,13 @@ import { UnauthorizedError } from '@/http/errors/unauthorized-error'
 import { eq } from 'drizzle-orm'
 import Elysia, { t } from 'elysia'
 
-export const approveOrder = new Elysia().use(auth).patch(
-  '/orders/:orderId/approve',
+export const dispatchOrder = new Elysia().use(auth).patch(
+  '/orders/:orderId/dispatch',
   async ({ params: { orderId }, getCurrentUser, set }) => {
     const { restaurantId } = await getCurrentUser()
 
     if (!restaurantId) {
-      throw new UnauthorizedError('Only managers can approve orders.')
+      throw new UnauthorizedError('Only managers can dispatch orders.')
     }
 
     const order = await db.query.orders.findFirst({
@@ -27,16 +27,16 @@ export const approveOrder = new Elysia().use(auth).patch(
       }
     }
 
-    if (order.status !== 'PENDING') {
+    if (order.status !== 'PROCESSING') {
       set.status = 400
       return {
-        message: 'Order is not in a pending state and cannot be approved.',
+        message: 'Order is not in a processing state and cannot be dispatched.',
       }
     }
 
     await db
       .update(orders)
-      .set({ status: 'PROCESSING' })
+      .set({ status: 'DELIVERING' })
       .where(eq(orders.id, orderId))
 
     return order
