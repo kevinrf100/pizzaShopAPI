@@ -1,5 +1,7 @@
 import { env } from '@/env'
+import { approveOrder } from '@/routes/approve-order'
 import { authenticateFromLink } from '@/routes/authenticate-from-link'
+import { getOrderDetails } from '@/routes/get-order-details'
 import { managedRestaurant } from '@/routes/managed-restaurants'
 import { profile } from '@/routes/profile'
 import { registerRestaurants } from '@/routes/register-restaurants'
@@ -16,6 +18,8 @@ const app = new Elysia()
   .use(authenticateFromLink)
   .use(profile)
   .use(managedRestaurant)
+  .use(getOrderDetails)
+  .use(approveOrder)
   // Creating a global error handler to catch validation errors
   .onError(({ error, code, set }) => {
     switch (code) {
