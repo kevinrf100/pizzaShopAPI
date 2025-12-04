@@ -4,7 +4,7 @@ import { UnauthorizedError } from '@/http/errors/unauthorized-error'
 import Elysia, { t } from 'elysia'
 
 export const profile = new Elysia().use(auth).get(
-  '/me',
+  '/profile',
   async ({ getCurrentUser }) => {
     const { userId } = await getCurrentUser()
 
