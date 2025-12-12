@@ -6,6 +6,7 @@ import { deliverOrder } from '@/routes/deliver-order'
 import { dispatchOrder } from '@/routes/dispatch-order'
 import { getMonthRevenue } from '@/routes/get-month-revenue'
 import { getOrderDetails } from '@/routes/get-order-details'
+import { getOrderDayAmount } from '@/routes/get-orders-day-ammount'
 import { managedRestaurant } from '@/routes/managed-restaurants'
 import { profile } from '@/routes/profile'
 import { registerRestaurants } from '@/routes/register-restaurants'
@@ -28,6 +29,7 @@ const app = new Elysia()
   .use(dispatchOrder)
   .use(deliverOrder)
   .use(getMonthRevenue)
+  .use(getOrderDayAmount)
   // Creating a global error handler to catch validation errors
   .onError(({ error, code, set }) => {
     switch (code) {
