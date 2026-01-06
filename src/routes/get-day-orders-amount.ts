@@ -6,9 +6,9 @@ import dayjs from 'dayjs'
 import { and, count, eq, gte, sql, sum } from 'drizzle-orm'
 import Elysia from 'elysia'
 
-export const getOrderDayAmount = new Elysia()
+export const getDayOrdersAmount = new Elysia()
   .use(auth)
-  .get('/month-revenue', async ({ getCurrentUser }) => {
+  .get('/day-orders-amount', async ({ getCurrentUser }) => {
     const { restaurantId } = await getCurrentUser()
 
     if (!restaurantId) {
